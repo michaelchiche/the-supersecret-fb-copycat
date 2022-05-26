@@ -1,11 +1,12 @@
 import classnames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useUser } from '../contexts/user';
 import {
   PostQuery,
   useCommentsSubscription,
   useInsertUpvoteMutation,
 } from '../generated/graphql';
+import { formatRelativeTime } from '../utils/formatRelativeTime';
 
 export const Comment = React.memo<{
   comment: NonNullable<
@@ -19,13 +20,20 @@ export const Comment = React.memo<{
     },
   });
 
+  let { current: previousUpvote } = useRef<number>();
   const [animateUpvote, setAnimateUpvote] = useState(false);
 
   useEffect(() => {
-    setAnimateUpvote(true);
-    setTimeout(() => {
-      setAnimateUpvote(false);
-    }, 1000);
+    if (
+      data?.comment_by_pk?.upvotes.aggregate?.count &&
+      data?.comment_by_pk?.upvotes.aggregate?.count !== previousUpvote
+    ) {
+      setAnimateUpvote(true);
+      previousUpvote = data?.comment_by_pk?.upvotes.aggregate?.count;
+      setTimeout(() => {
+        setAnimateUpvote(false);
+      }, 1000);
+    }
   }, [data?.comment_by_pk?.upvotes.aggregate?.count]);
 
   if (error) {
@@ -57,7 +65,7 @@ export const Comment = React.memo<{
           </span>
           <span className="mx-1 text-xs leading-3 text-gray-500">・</span>
           <span className="text-xs leading-3 text-gray-500" title="">
-            {comment.created_at}
+            {formatRelativeTime(new Date(comment.created_at))}
           </span>
         </div>
         <div className="mt-1 text-sm leading-5">{comment.comment}</div>
