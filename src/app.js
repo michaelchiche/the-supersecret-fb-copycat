@@ -97,6 +97,11 @@
           }]) {
             id
             comment
+            upvotes: upvotes_aggregate {
+              aggregate {
+                count
+              }
+            }
             created_at
             user {
               avatar
@@ -113,9 +118,17 @@
       },
     ).then(data => {
       commentsContainer.append(
-        ...data.post_by_pk.comments.map(({ id, user, comment }) => {
-          return createCommentNode({ id, user, comment });
-        }),
+        ...data.post_by_pk.comments.map(
+          ({ id, user, comment, upvotes, created_at }) => {
+            return createCommentNode({
+              id,
+              user,
+              comment,
+              upvotes,
+              created_at,
+            });
+          },
+        ),
       );
     });
     const form = document.getElementById('comment-form');
@@ -132,6 +145,11 @@
             avatar
             firstname
             lastname
+          }
+          upvotes: upvotes_aggregate {
+            aggregate {
+              count
+            }
           }
         }
       }
@@ -157,17 +175,21 @@
   };
 })();
 
-function createCommentNode({ id, user, comment }) {
+function createCommentNode({ id, user, comment, upvotes, created_at }) {
   const templateComment = document.getElementById('comment');
   const clone = document.importNode(templateComment.content, true);
 
   const image = clone.getElementById('comment-author-avatar');
   image.src = user.avatar;
+  image.setAttribute(
+    'alt',
+    `${user.firstname[0].toUpperCase()}${user.lastname[0].toUpperCase()}`,
+  );
   image.removeAttribute('id');
 
   const time = clone.getElementById('comment-relative-time');
-  time.textContent = Date.now();
-  time.setAttribute('title', Date.now());
+  time.textContent = formatRelativeTime(new Date(created_at));
+  time.setAttribute('title', new Date(created_at));
   time.removeAttribute('id');
 
   const commentator = clone.getElementById('commentator');
@@ -180,6 +202,7 @@ function createCommentNode({ id, user, comment }) {
 
   const upvote = clone.getElementById('upvote');
   upvote.setAttribute('data-comment-id', id);
+  upvote.setAttribute('data-upvote-count', upvotes.aggregate.count);
   upvote.removeAttribute('id');
 
   const reply = clone.getElementById('reply');
@@ -187,4 +210,39 @@ function createCommentNode({ id, user, comment }) {
   reply.removeAttribute('id');
 
   return clone;
+}
+
+// Source: https://suckatcoding.com/blog/relative-time-in-js/
+function formatRelativeTime(
+  date,
+  reference = new Date(),
+  language = navigator.language,
+) {
+  if (!date) return '';
+
+  date = new Date(date);
+  let delta = Math.round((date - reference) / 1000),
+    deltaInUnit = delta,
+    unit = 'second';
+
+  const units = [
+    { unit: 60, name: 'minute' },
+    { unit: 60 * 60, name: 'hour' },
+    { unit: 60 * 60 * 24, name: 'day' },
+    { unit: 60 * 60 * 24 * 7, name: 'week' },
+    { unit: 60 * 60 * 24 * 30, name: 'month' },
+    { unit: 60 * 60 * 24 * 400, name: 'year' },
+  ];
+
+  for (let u of units) {
+    if (Math.abs(delta) > u.unit) {
+      deltaInUnit = delta / u.unit;
+      unit = u.name;
+    }
+  }
+
+  return new Intl.RelativeTimeFormat(language, {
+    style: 'long',
+    numeric: 'auto',
+  }).format(deltaInUnit.toFixed(0), unit);
 }
