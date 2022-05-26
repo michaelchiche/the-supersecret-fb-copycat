@@ -86,7 +86,7 @@ export const Comment = React.memo<{
         <div
           className={classnames(
             'mt-3.5 flex text-xs font-semibold text-gray-500',
-            replies.length && 'mb-6',
+            (replies.length || showInput) && 'mb-6',
           )}
         >
           <div

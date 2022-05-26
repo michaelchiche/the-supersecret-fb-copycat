@@ -14,7 +14,7 @@ export const Input: FC<
     <form
       ref={form}
       id="comment-form"
-      className={classNames('flex h-8', commentId ? 'mb-8' : 'mt-8')}
+      className={classNames('flex h-8', commentId && 'mb-8')}
       onSubmit={e => {
         e.preventDefault();
         insertComment({
