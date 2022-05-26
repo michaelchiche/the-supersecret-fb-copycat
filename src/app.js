@@ -20,15 +20,24 @@
   const params = new URLSearchParams(window.location.search);
   const postId = params.get('post') || 1;
   const commentsContainer = document.getElementById('comments');
-  const templateComment = document.getElementById('template-comment');
+  const templateComment = document.getElementById('comment');
+  const submitButton = document.getElementById('submit-comment');
   const currentUserId = numberBetween(1, 100);
   const commentAuthorAvatarImg = document.getElementById(
     'comment-author-avatar',
   );
+
+  if (localStorage.getItem('currentUser')) {
+    submitButton.removeAttribute('disabled');
+  }
+
   window.onload = () => {
     graphqlFetch(
       `query user($currentUserId: Int!) {
       user_by_pk(id: $currentUserId) {
+        id
+        firstname
+        lastname
         avatar
       }
     }
@@ -39,16 +48,30 @@
     ).then(data => {
       console.log('data', data.user_by_pk.avatar);
       commentAuthorAvatarImg.src = data.user_by_pk.avatar;
+      localStorage.setItem('currentUser', JSON.stringify(data.user_by_pk));
+      submitButton.removeAttribute('disabled');
     });
     const form = document.getElementById('comment-form');
     form.addEventListener('submit', e => {
       e.preventDefault();
-      console.log('e', e.target.elements.comment.value);
-      const c = templateComment.cloneNode(true);
-      c.id = `comment-${numberBetween(1, 10000)}`;
-      console.log('c', c);
-      console.log('commentsContainer', commentsContainer);
-      commentsContainer.appendChild(c);
+      const user = JSON.parse(localStorage.getItem('currentUser'));
+      const clone = document.importNode(templateComment.content, true);
+      const image = clone.getElementById('comment-author-avatar');
+      image.src = user.avatar;
+      image.removeAttribute('id');
+      const time = clone.getElementById('comment-relative-time');
+      time.textContent = Date.now();
+      time.setAttribute('title', Date.now());
+      time.removeAttribute('id');
+      const commentator = clone.getElementById('commentator');
+      commentator.textContent = `${user.firstname} ${user.lastname}`;
+      commentator.removeAttribute('id');
+      const commentContent = clone.getElementById('comment-content');
+      commentContent.textContent = e.target.elements.comment.value;
+      commentContent.removeAttribute('id');
+      // console.log('commentsContainer', commentsContainer);
+      commentsContainer.appendChild(clone);
+      form.reset();
     });
   };
 })();
