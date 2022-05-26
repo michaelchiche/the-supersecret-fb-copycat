@@ -9,6 +9,23 @@ subscription postComments($postId: Int!) {
           count
         }
       }
+      replies(order_by: [{ created_at: desc_nulls_last }]) {
+        id
+        comment
+        created_at
+        upvotes: upvotes_aggregate {
+          aggregate {
+            count
+          }
+        }
+        user {
+          id
+          avatar
+          firstname
+          lastname
+          avatar
+        }
+      }
       user {
         id
         firstname
@@ -27,7 +44,7 @@ subscription comments($commentId: Int!) {
         count
       }
     }
-    replies {
+    replies(order_by: [{ created_at: desc_nulls_last }]) {
       id
       comment
       created_at
@@ -38,6 +55,7 @@ subscription comments($commentId: Int!) {
       }
       user {
         id
+        avatar
         firstname
         lastname
         avatar

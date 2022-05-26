@@ -1985,14 +1985,14 @@ export type PostCommentsSubscriptionVariables = Exact<{
 }>;
 
 
-export type PostCommentsSubscription = { __typename?: 'subscription_root', post_by_pk?: { __typename?: 'post', comments: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, firstname: string, lastname: string, avatar: string } }> } | null };
+export type PostCommentsSubscription = { __typename?: 'subscription_root', post_by_pk?: { __typename?: 'post', comments: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, replies: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, avatar: string, firstname: string, lastname: string } }>, user: { __typename?: 'user', id: number, firstname: string, lastname: string, avatar: string } }> } | null };
 
 export type CommentsSubscriptionVariables = Exact<{
   commentId: Scalars['Int'];
 }>;
 
 
-export type CommentsSubscription = { __typename?: 'subscription_root', comment_by_pk?: { __typename?: 'comment', id: number, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, replies: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, firstname: string, lastname: string, avatar: string } }> } | null };
+export type CommentsSubscription = { __typename?: 'subscription_root', comment_by_pk?: { __typename?: 'comment', id: number, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, replies: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, avatar: string, firstname: string, lastname: string } }> } | null };
 
 
       export interface PossibleTypesResultData {
@@ -2236,6 +2236,23 @@ export const PostCommentsDocument = gql`
           count
         }
       }
+      replies(order_by: [{created_at: desc_nulls_last}]) {
+        id
+        comment
+        created_at
+        upvotes: upvotes_aggregate {
+          aggregate {
+            count
+          }
+        }
+        user {
+          id
+          avatar
+          firstname
+          lastname
+          avatar
+        }
+      }
       user {
         id
         firstname
@@ -2278,7 +2295,7 @@ export const CommentsDocument = gql`
         count
       }
     }
-    replies {
+    replies(order_by: [{created_at: desc_nulls_last}]) {
       id
       comment
       created_at
@@ -2289,6 +2306,7 @@ export const CommentsDocument = gql`
       }
       user {
         id
+        avatar
         firstname
         lastname
         avatar
