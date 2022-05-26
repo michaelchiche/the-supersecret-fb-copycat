@@ -9,10 +9,13 @@ import {
 import { formatRelativeTime } from '../utils/formatRelativeTime';
 
 export const Comment = React.memo<{
-  comment: NonNullable<
-    NonNullable<PostQuery>['post_by_pk']
-  >['comments'][number];
-}>(({ comment }) => {
+  comment:
+    | NonNullable<NonNullable<PostQuery>['post_by_pk']>['comments'][number]
+    | NonNullable<
+        NonNullable<PostQuery>['post_by_pk']
+      >['comments'][number]['replies'][number];
+  isReply?: boolean;
+}>(({ comment, isReply = false }) => {
   const user = useUser();
   const { data, error } = useCommentsSubscription({
     variables: {
@@ -26,14 +29,15 @@ export const Comment = React.memo<{
   useEffect(() => {
     if (
       data?.comment_by_pk?.upvotes.aggregate?.count &&
+      previousUpvote !== undefined &&
       data?.comment_by_pk?.upvotes.aggregate?.count !== previousUpvote
     ) {
       setAnimateUpvote(true);
-      previousUpvote = data?.comment_by_pk?.upvotes.aggregate?.count;
       setTimeout(() => {
         setAnimateUpvote(false);
       }, 1000);
     }
+    previousUpvote = data?.comment_by_pk?.upvotes.aggregate?.count;
   }, [data?.comment_by_pk?.upvotes.aggregate?.count]);
 
   if (error) {
@@ -69,7 +73,12 @@ export const Comment = React.memo<{
           </span>
         </div>
         <div className="mt-1 text-sm leading-5">{comment.comment}</div>
-        <div className="mt-3.5 flex text-xs font-semibold text-gray-500">
+        <div
+          className={classnames(
+            'mt-3.5 flex text-xs font-semibold text-gray-500',
+            'replies' in comment && !!comment.replies?.length && 'mb-6',
+          )}
+        >
           <div
             data-upvote-count={
               comment.upvotes.aggregate?.count ||
@@ -92,8 +101,18 @@ export const Comment = React.memo<{
             </span>
             <span className="ml-2">Upvote</span>
           </div>
-          <div className="reply ml-7 hover:cursor-pointer">Reply</div>
+          {!isReply && (
+            <div className="reply ml-7 hover:cursor-pointer">Reply</div>
+          )}
         </div>
+        {!isReply && (
+          <div>
+            {'replies' in comment &&
+              comment.replies.map(comment => {
+                return <Comment key={comment.id} comment={comment} isReply />;
+              })}
+          </div>
+        )}
       </div>
     </div>
   );

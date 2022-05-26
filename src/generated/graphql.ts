@@ -1966,7 +1966,7 @@ export type PostQueryVariables = Exact<{
 }>;
 
 
-export type PostQuery = { __typename?: 'query_root', post_by_pk?: { __typename?: 'post', id: number, comments: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, avatar: string, firstname: string, lastname: string } }> } | null };
+export type PostQuery = { __typename?: 'query_root', post_by_pk?: { __typename?: 'post', id: number, comments: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, avatar: string, firstname: string, lastname: string }, replies: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, avatar: string, firstname: string, lastname: string } }> }> } | null };
 
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1992,7 +1992,7 @@ export type CommentsSubscriptionVariables = Exact<{
 }>;
 
 
-export type CommentsSubscription = { __typename?: 'subscription_root', comment_by_pk?: { __typename?: 'comment', id: number, comment: string, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null } } | null };
+export type CommentsSubscription = { __typename?: 'subscription_root', comment_by_pk?: { __typename?: 'comment', id: number, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null } } | null };
 
 
       export interface PossibleTypesResultData {
@@ -2101,6 +2101,23 @@ export const PostDocument = gql`
         firstname
         lastname
         avatar
+      }
+      replies(order_by: [{created_at: desc_nulls_last}]) {
+        id
+        comment
+        created_at
+        upvotes: upvotes_aggregate {
+          aggregate {
+            count
+          }
+        }
+        user {
+          id
+          avatar
+          firstname
+          lastname
+          avatar
+        }
       }
     }
   }
@@ -2256,7 +2273,6 @@ export const CommentsDocument = gql`
     subscription comments($commentId: Int!) {
   comment_by_pk(id: $commentId) {
     id
-    comment
     upvotes: upvotes_aggregate {
       aggregate {
         count

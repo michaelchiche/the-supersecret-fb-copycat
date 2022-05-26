@@ -17,6 +17,23 @@ query post($postId: Int!) {
         lastname
         avatar
       }
+      replies(order_by: [{ created_at: desc_nulls_last }]) {
+        id
+        comment
+        created_at
+        upvotes: upvotes_aggregate {
+          aggregate {
+            count
+          }
+        }
+        user {
+          id
+          avatar
+          firstname
+          lastname
+          avatar
+        }
+      }
     }
   }
 }
