@@ -21,7 +21,7 @@
   const postId = Number(params.get('post') || 1);
   const commentsContainer = document.getElementById('comments');
   const submitButton = document.getElementById('submit-comment');
-  const currentUserId = numberBetween(1, 20);
+  const currentUserId = Number(params.get('user') || numberBetween(1, 20));
   const commentAuthorAvatarImg = document.getElementById(
     'comment-author-avatar',
   );
@@ -31,6 +31,43 @@
   }
 
   window.onload = () => {
+    document.getElementById('comments').addEventListener('click', function (e) {
+      const isUpvote = e.target.closest('.upvote');
+      const isReply = e.target.closest('.reply');
+
+      if (isUpvote) {
+        graphqlFetch(
+          `mutation insertUpvote($upvote: upvote_insert_input!) {
+          insert_upvote_one(object: $upvote) {
+            id
+            upvoter_id
+            upvoted_comment_id
+          }
+        }
+        `,
+          {
+            upvote: {
+              upvoted_comment_id: isUpvote.getAttribute('data-comment-id'),
+              upvoter_id: currentUserId,
+            },
+          },
+        ).then(data => {
+          if (`insert_upvote_one` in (data || {})) {
+            console.info(
+              `upvote added to comment: ${data.insert_upvote_one.id}`,
+            );
+          } else {
+            console.error(
+              'could not add upvote, seems like you already have upvoted this comment',
+            );
+          }
+        });
+      }
+      if (isReply) {
+        console.warn('Reply to comment is not implemented is V1');
+      }
+    });
+
     graphqlFetch(
       `query user($currentUserId: Int!) {
       user_by_pk(id: $currentUserId) {
@@ -58,6 +95,7 @@
           comments(order_by: [{
             created_at: desc_nulls_last
           }]) {
+            id
             comment
             created_at
             user {
@@ -75,8 +113,8 @@
       },
     ).then(data => {
       commentsContainer.append(
-        ...data.post_by_pk.comments.map(({ user, comment }) => {
-          return createCommentNode(user, comment);
+        ...data.post_by_pk.comments.map(({ id, user, comment }) => {
+          return createCommentNode({ id, user, comment });
         }),
       );
     });
@@ -107,10 +145,7 @@
         },
       )
         .then(data => {
-          const clone = createCommentNode(
-            data.insert_comment_one.user,
-            data.insert_comment_one.comment,
-          );
+          const clone = createCommentNode(data.insert_comment_one);
           commentsContainer.prepend(clone);
           form.reset();
         })
@@ -122,21 +157,34 @@
   };
 })();
 
-function createCommentNode(user, comment) {
+function createCommentNode({ id, user, comment }) {
   const templateComment = document.getElementById('comment');
   const clone = document.importNode(templateComment.content, true);
+
   const image = clone.getElementById('comment-author-avatar');
   image.src = user.avatar;
   image.removeAttribute('id');
+
   const time = clone.getElementById('comment-relative-time');
   time.textContent = Date.now();
   time.setAttribute('title', Date.now());
   time.removeAttribute('id');
+
   const commentator = clone.getElementById('commentator');
   commentator.textContent = `${user.firstname} ${user.lastname}`;
   commentator.removeAttribute('id');
+
   const commentContent = clone.getElementById('comment-content');
   commentContent.textContent = comment;
   commentContent.removeAttribute('id');
+
+  const upvote = clone.getElementById('upvote');
+  upvote.setAttribute('data-comment-id', id);
+  upvote.removeAttribute('id');
+
+  const reply = clone.getElementById('reply');
+  reply.setAttribute('data-comment-id', id);
+  reply.removeAttribute('id');
+
   return clone;
 }
