@@ -9,11 +9,10 @@ const numberBetween = (min, max) => {
 
 const numberOfUsers = 20;
 const numberOfComments = 20;
-const numberOfUpvotes = 20;
 const hasura = new GraphQLClient(endpoint, {});
 (async () => {
   // Adding Seed Users
-  const users = Array.from(Array(100), () => ({
+  const users = Array.from(Array(numberOfUsers), () => ({
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
     avatar: faker.internet.avatar(),
@@ -43,12 +42,12 @@ const hasura = new GraphQLClient(endpoint, {});
   await hasura.request(addPost, { post });
 
   // Adding comments
-  const comments = Array.from(Array(1000), (_, index) => {
+  const comments = Array.from(Array(numberOfComments), (_, index) => {
     const isComment = index === 0 || faker.datatype.boolean();
 
     const comment = {
       comment: faker.lorem.sentences(3),
-      commentator: numberBetween(1, 100),
+      commentator: numberBetween(1, numberOfUsers),
       ...(isComment
         ? {
             post_id: 1,
@@ -77,22 +76,4 @@ const hasura = new GraphQLClient(endpoint, {});
         throw new Error('FUCK');
       });
   }
-
-  // Add upvotes
-  const upvotes = Array.from(Array(1789), () => {
-    return {
-      upvoted_comment_id: numberBetween(1, 1000),
-      upvoter_id: numberBetween(1, 100),
-    };
-  });
-
-  const addUpvotes = gql`
-    mutation addUpvotes($upvotes: [upvote_insert_input!]!) {
-      insert_upvote(objects: $upvotes) {
-        affected_rows
-      }
-    }
-  `;
-
-  await hasura.request(addUpvotes, { upvotes });
 })();
