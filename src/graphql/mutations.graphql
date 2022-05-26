@@ -1,0 +1,20 @@
+mutation insertUpvote($upvote: upvote_insert_input!) {
+  insert_upvote_one(object: $upvote) {
+    id
+    upvoter_id
+    upvoted_comment_id
+  }
+}
+
+mutation insertComment($comment: comment_insert_input!) {
+  insert_comment_one(object: $comment) {
+    id
+    comment
+    created_at
+    user {
+      avatar
+      firstname
+      lastname
+    }
+  }
+}

@@ -1,0 +1,37 @@
+query post($postId: Int!) {
+  post_by_pk(id: $postId) {
+    id
+    comments(order_by: [{ created_at: desc_nulls_last }]) {
+      id
+      comment
+      upvotes: upvotes_aggregate {
+        aggregate {
+          count
+        }
+      }
+      created_at
+      user {
+        avatar
+        firstname
+        lastname
+        avatar
+      }
+    }
+  }
+}
+
+query posts {
+  post {
+    id
+    title
+  }
+}
+
+query user($currentUserId: Int!) {
+  user_by_pk(id: $currentUserId) {
+    id
+    firstname
+    lastname
+    avatar
+  }
+}
