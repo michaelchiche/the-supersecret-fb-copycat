@@ -7,6 +7,7 @@ import {
   useInsertUpvoteMutation,
 } from '../generated/graphql';
 import { formatRelativeTime } from '../utils/formatRelativeTime';
+import { Input } from './Input';
 
 export const Comment = React.memo<{
   comment:
@@ -25,6 +26,7 @@ export const Comment = React.memo<{
 
   let { current: previousUpvote } = useRef<number>();
   const [animateUpvote, setAnimateUpvote] = useState(false);
+  const [showInput, setShowInput] = useState(false);
 
   useEffect(() => {
     if (
@@ -55,14 +57,14 @@ export const Comment = React.memo<{
 
   console.log('data ===', data?.comment_by_pk?.id);
   return (
-    <div className="mt-8 flex first:mt-0 last:mb-2">
+    <div className="mt-8 flex w-full flex-grow first:mt-0 last:mb-2">
       <img
         className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
         src={comment.user.avatar}
         alt="current
         user avatar"
       />
-      <div className="ml-3 mt-1 flex flex-col">
+      <div className="ml-3 mt-1 flex w-full flex-col">
         <div className="flex h-4">
           <span className="text-sm font-semibold leading-3">
             {comment.user.firstname} {comment.user.lastname}
@@ -102,9 +104,17 @@ export const Comment = React.memo<{
             <span className="ml-2">Upvote</span>
           </div>
           {!isReply && (
-            <div className="reply ml-7 hover:cursor-pointer">Reply</div>
+            <div
+              className="reply ml-7 hover:cursor-pointer"
+              onClick={() => setShowInput(true)}
+            >
+              Reply
+            </div>
           )}
         </div>
+        {showInput && (
+          <Input commentId={comment.id} onSubmit={() => setShowInput(false)} />
+        )}
         {!isReply && (
           <div>
             {'replies' in comment &&
