@@ -62,6 +62,7 @@
             created_at
             user {
               avatar
+              firstname
               lastname
               avatar
             }
@@ -73,8 +74,12 @@
         postId,
       },
     ).then(data => {
-      console.log('data', data);
-      // data.post_by_pk.comments.map();
+      commentsContainer.append(
+        ...data.post_by_pk.comments.map(({ user, comment }) => {
+          return createCommentNode(user, comment);
+        }),
+      );
+
       // commentAuthorAvatarImg.src = data.user_by_pk.avatar;
       // localStorage.setItem('currentUser', JSON.stringify(data.user_by_pk));
       // submitButton.removeAttribute('disabled');
@@ -84,7 +89,7 @@
       e.preventDefault();
       const user = JSON.parse(localStorage.getItem('currentUser'));
       const clone = createCommentNode(user, e.target.elements.comment.value);
-      commentsContainer.append(clone);
+      commentsContainer.prepend(clone);
       form.reset();
     });
   };
@@ -92,7 +97,6 @@
 
 function createCommentNode(user, comment) {
   const templateComment = document.getElementById('comment');
-
   const clone = document.importNode(templateComment.content, true);
   const image = clone.getElementById('comment-author-avatar');
   image.src = user.avatar;
