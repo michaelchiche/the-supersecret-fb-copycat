@@ -18,7 +18,7 @@
       .then(({ data }) => data);
 
   const params = new URLSearchParams(window.location.search);
-  const postId = params.get('post') || 1;
+  const postId = Number(params.get('post') || 1);
   const commentsContainer = document.getElementById('comments');
   const submitButton = document.getElementById('submit-comment');
   const currentUserId = numberBetween(1, 20);
@@ -79,18 +79,45 @@
           return createCommentNode(user, comment);
         }),
       );
-
-      // commentAuthorAvatarImg.src = data.user_by_pk.avatar;
-      // localStorage.setItem('currentUser', JSON.stringify(data.user_by_pk));
-      // submitButton.removeAttribute('disabled');
     });
     const form = document.getElementById('comment-form');
     form.addEventListener('submit', e => {
       e.preventDefault();
       const user = JSON.parse(localStorage.getItem('currentUser'));
-      const clone = createCommentNode(user, e.target.elements.comment.value);
-      commentsContainer.prepend(clone);
-      form.reset();
+      graphqlFetch(
+        `mutation insertComment($comment: comment_insert_input!) {
+        insert_comment_one(object: $comment) {
+          id
+          comment
+          created_at
+          user {
+            avatar
+            firstname
+            lastname
+          }
+        }
+      }
+      `,
+        {
+          comment: {
+            post_id: postId,
+            comment: e.target.elements.comment.value,
+            commentator: currentUserId,
+          },
+        },
+      )
+        .then(data => {
+          const clone = createCommentNode(
+            data.insert_comment_one.user,
+            data.insert_comment_one.comment,
+          );
+          commentsContainer.prepend(clone);
+          form.reset();
+        })
+        .catch(error => {
+          alert('there was an error submitting your comment');
+          console.error('error', error);
+        });
     });
   };
 })();
