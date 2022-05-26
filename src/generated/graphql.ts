@@ -1,17 +1,11 @@
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -94,6 +88,7 @@ export type Comment = {
   user: User;
 };
 
+
 /** comments */
 export type CommentRepliesArgs = {
   distinct_on?: InputMaybe<Array<Comment_Select_Column>>;
@@ -102,6 +97,7 @@ export type CommentRepliesArgs = {
   order_by?: InputMaybe<Array<Comment_Order_By>>;
   where?: InputMaybe<Comment_Bool_Exp>;
 };
+
 
 /** comments */
 export type CommentReplies_AggregateArgs = {
@@ -112,6 +108,7 @@ export type CommentReplies_AggregateArgs = {
   where?: InputMaybe<Comment_Bool_Exp>;
 };
 
+
 /** comments */
 export type CommentUpvotesArgs = {
   distinct_on?: InputMaybe<Array<Upvote_Select_Column>>;
@@ -120,6 +117,7 @@ export type CommentUpvotesArgs = {
   order_by?: InputMaybe<Array<Upvote_Order_By>>;
   where?: InputMaybe<Upvote_Bool_Exp>;
 };
+
 
 /** comments */
 export type CommentUpvotes_AggregateArgs = {
@@ -152,6 +150,7 @@ export type Comment_Aggregate_Fields = {
   var_samp?: Maybe<Comment_Var_Samp_Fields>;
   variance?: Maybe<Comment_Variance_Fields>;
 };
+
 
 /** aggregate fields of "comment" */
 export type Comment_Aggregate_FieldsCountArgs = {
@@ -220,7 +219,7 @@ export type Comment_Bool_Exp = {
 /** unique or primary key constraints on table "comment" */
 export enum Comment_Constraint {
   /** unique or primary key constraint */
-  CommentPkey = 'comment_pkey',
+  CommentPkey = 'comment_pkey'
 }
 
 /** input type for incrementing numeric columns in table "comment" */
@@ -352,7 +351,7 @@ export enum Comment_Select_Column {
   /** column name */
   ReplyToId = 'reply_to_id',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "comment" */
@@ -449,7 +448,7 @@ export enum Comment_Update_Column {
   /** column name */
   ReplyToId = 'reply_to_id',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 /** aggregate var_pop on columns */
@@ -556,45 +555,54 @@ export type Mutation_Root = {
   update_user_by_pk?: Maybe<User>;
 };
 
+
 /** mutation root */
 export type Mutation_RootDelete_CommentArgs = {
   where: Comment_Bool_Exp;
 };
+
 
 /** mutation root */
 export type Mutation_RootDelete_Comment_By_PkArgs = {
   id: Scalars['Int'];
 };
 
+
 /** mutation root */
 export type Mutation_RootDelete_PostArgs = {
   where: Post_Bool_Exp;
 };
+
 
 /** mutation root */
 export type Mutation_RootDelete_Post_By_PkArgs = {
   id: Scalars['Int'];
 };
 
+
 /** mutation root */
 export type Mutation_RootDelete_UpvoteArgs = {
   where: Upvote_Bool_Exp;
 };
+
 
 /** mutation root */
 export type Mutation_RootDelete_Upvote_By_PkArgs = {
   id: Scalars['Int'];
 };
 
+
 /** mutation root */
 export type Mutation_RootDelete_UserArgs = {
   where: User_Bool_Exp;
 };
 
+
 /** mutation root */
 export type Mutation_RootDelete_User_By_PkArgs = {
   id: Scalars['Int'];
 };
+
 
 /** mutation root */
 export type Mutation_RootInsert_CommentArgs = {
@@ -602,11 +610,13 @@ export type Mutation_RootInsert_CommentArgs = {
   on_conflict?: InputMaybe<Comment_On_Conflict>;
 };
 
+
 /** mutation root */
 export type Mutation_RootInsert_Comment_OneArgs = {
   object: Comment_Insert_Input;
   on_conflict?: InputMaybe<Comment_On_Conflict>;
 };
+
 
 /** mutation root */
 export type Mutation_RootInsert_PostArgs = {
@@ -614,11 +624,13 @@ export type Mutation_RootInsert_PostArgs = {
   on_conflict?: InputMaybe<Post_On_Conflict>;
 };
 
+
 /** mutation root */
 export type Mutation_RootInsert_Post_OneArgs = {
   object: Post_Insert_Input;
   on_conflict?: InputMaybe<Post_On_Conflict>;
 };
+
 
 /** mutation root */
 export type Mutation_RootInsert_UpvoteArgs = {
@@ -626,11 +638,13 @@ export type Mutation_RootInsert_UpvoteArgs = {
   on_conflict?: InputMaybe<Upvote_On_Conflict>;
 };
 
+
 /** mutation root */
 export type Mutation_RootInsert_Upvote_OneArgs = {
   object: Upvote_Insert_Input;
   on_conflict?: InputMaybe<Upvote_On_Conflict>;
 };
+
 
 /** mutation root */
 export type Mutation_RootInsert_UserArgs = {
@@ -638,11 +652,13 @@ export type Mutation_RootInsert_UserArgs = {
   on_conflict?: InputMaybe<User_On_Conflict>;
 };
 
+
 /** mutation root */
 export type Mutation_RootInsert_User_OneArgs = {
   object: User_Insert_Input;
   on_conflict?: InputMaybe<User_On_Conflict>;
 };
+
 
 /** mutation root */
 export type Mutation_RootUpdate_CommentArgs = {
@@ -651,12 +667,14 @@ export type Mutation_RootUpdate_CommentArgs = {
   where: Comment_Bool_Exp;
 };
 
+
 /** mutation root */
 export type Mutation_RootUpdate_Comment_By_PkArgs = {
   _inc?: InputMaybe<Comment_Inc_Input>;
   _set?: InputMaybe<Comment_Set_Input>;
   pk_columns: Comment_Pk_Columns_Input;
 };
+
 
 /** mutation root */
 export type Mutation_RootUpdate_PostArgs = {
@@ -665,12 +683,14 @@ export type Mutation_RootUpdate_PostArgs = {
   where: Post_Bool_Exp;
 };
 
+
 /** mutation root */
 export type Mutation_RootUpdate_Post_By_PkArgs = {
   _inc?: InputMaybe<Post_Inc_Input>;
   _set?: InputMaybe<Post_Set_Input>;
   pk_columns: Post_Pk_Columns_Input;
 };
+
 
 /** mutation root */
 export type Mutation_RootUpdate_UpvoteArgs = {
@@ -679,6 +699,7 @@ export type Mutation_RootUpdate_UpvoteArgs = {
   where: Upvote_Bool_Exp;
 };
 
+
 /** mutation root */
 export type Mutation_RootUpdate_Upvote_By_PkArgs = {
   _inc?: InputMaybe<Upvote_Inc_Input>;
@@ -686,12 +707,14 @@ export type Mutation_RootUpdate_Upvote_By_PkArgs = {
   pk_columns: Upvote_Pk_Columns_Input;
 };
 
+
 /** mutation root */
 export type Mutation_RootUpdate_UserArgs = {
   _inc?: InputMaybe<User_Inc_Input>;
   _set?: InputMaybe<User_Set_Input>;
   where: User_Bool_Exp;
 };
+
 
 /** mutation root */
 export type Mutation_RootUpdate_User_By_PkArgs = {
@@ -713,7 +736,7 @@ export enum Order_By {
   /** in descending order, nulls first */
   DescNullsFirst = 'desc_nulls_first',
   /** in descending order, nulls last */
-  DescNullsLast = 'desc_nulls_last',
+  DescNullsLast = 'desc_nulls_last'
 }
 
 /** columns and relationships of "post" */
@@ -733,6 +756,7 @@ export type Post = {
   updated_at: Scalars['timestamptz'];
 };
 
+
 /** columns and relationships of "post" */
 export type PostCommentsArgs = {
   distinct_on?: InputMaybe<Array<Comment_Select_Column>>;
@@ -741,6 +765,7 @@ export type PostCommentsArgs = {
   order_by?: InputMaybe<Array<Comment_Order_By>>;
   where?: InputMaybe<Comment_Bool_Exp>;
 };
+
 
 /** columns and relationships of "post" */
 export type PostComments_AggregateArgs = {
@@ -773,6 +798,7 @@ export type Post_Aggregate_Fields = {
   var_samp?: Maybe<Post_Var_Samp_Fields>;
   variance?: Maybe<Post_Variance_Fields>;
 };
+
 
 /** aggregate fields of "post" */
 export type Post_Aggregate_FieldsCountArgs = {
@@ -833,7 +859,7 @@ export type Post_Bool_Exp = {
 /** unique or primary key constraints on table "post" */
 export enum Post_Constraint {
   /** unique or primary key constraint */
-  PostPkey = 'post_pkey',
+  PostPkey = 'post_pkey'
 }
 
 /** input type for incrementing numeric columns in table "post" */
@@ -949,7 +975,7 @@ export enum Post_Select_Column {
   /** column name */
   Title = 'title',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "post" */
@@ -1027,7 +1053,7 @@ export enum Post_Update_Column {
   /** column name */
   Title = 'title',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 /** aggregate var_pop on columns */
@@ -1097,6 +1123,7 @@ export type Query_Root = {
   user_by_pk?: Maybe<User>;
 };
 
+
 export type Query_RootCommentArgs = {
   distinct_on?: InputMaybe<Array<Comment_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1104,6 +1131,7 @@ export type Query_RootCommentArgs = {
   order_by?: InputMaybe<Array<Comment_Order_By>>;
   where?: InputMaybe<Comment_Bool_Exp>;
 };
+
 
 export type Query_RootComment_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Comment_Select_Column>>;
@@ -1113,9 +1141,11 @@ export type Query_RootComment_AggregateArgs = {
   where?: InputMaybe<Comment_Bool_Exp>;
 };
 
+
 export type Query_RootComment_By_PkArgs = {
   id: Scalars['Int'];
 };
+
 
 export type Query_RootPostArgs = {
   distinct_on?: InputMaybe<Array<Post_Select_Column>>;
@@ -1125,6 +1155,7 @@ export type Query_RootPostArgs = {
   where?: InputMaybe<Post_Bool_Exp>;
 };
 
+
 export type Query_RootPost_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Post_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1133,9 +1164,11 @@ export type Query_RootPost_AggregateArgs = {
   where?: InputMaybe<Post_Bool_Exp>;
 };
 
+
 export type Query_RootPost_By_PkArgs = {
   id: Scalars['Int'];
 };
+
 
 export type Query_RootUpvoteArgs = {
   distinct_on?: InputMaybe<Array<Upvote_Select_Column>>;
@@ -1145,6 +1178,7 @@ export type Query_RootUpvoteArgs = {
   where?: InputMaybe<Upvote_Bool_Exp>;
 };
 
+
 export type Query_RootUpvote_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Upvote_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1153,9 +1187,11 @@ export type Query_RootUpvote_AggregateArgs = {
   where?: InputMaybe<Upvote_Bool_Exp>;
 };
 
+
 export type Query_RootUpvote_By_PkArgs = {
   id: Scalars['Int'];
 };
+
 
 export type Query_RootUserArgs = {
   distinct_on?: InputMaybe<Array<User_Select_Column>>;
@@ -1165,6 +1201,7 @@ export type Query_RootUserArgs = {
   where?: InputMaybe<User_Bool_Exp>;
 };
 
+
 export type Query_RootUser_AggregateArgs = {
   distinct_on?: InputMaybe<Array<User_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1172,6 +1209,7 @@ export type Query_RootUser_AggregateArgs = {
   order_by?: InputMaybe<Array<User_Order_By>>;
   where?: InputMaybe<User_Bool_Exp>;
 };
+
 
 export type Query_RootUser_By_PkArgs = {
   id: Scalars['Int'];
@@ -1205,6 +1243,7 @@ export type Subscription_Root = {
   user_by_pk?: Maybe<User>;
 };
 
+
 export type Subscription_RootCommentArgs = {
   distinct_on?: InputMaybe<Array<Comment_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1212,6 +1251,7 @@ export type Subscription_RootCommentArgs = {
   order_by?: InputMaybe<Array<Comment_Order_By>>;
   where?: InputMaybe<Comment_Bool_Exp>;
 };
+
 
 export type Subscription_RootComment_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Comment_Select_Column>>;
@@ -1221,9 +1261,11 @@ export type Subscription_RootComment_AggregateArgs = {
   where?: InputMaybe<Comment_Bool_Exp>;
 };
 
+
 export type Subscription_RootComment_By_PkArgs = {
   id: Scalars['Int'];
 };
+
 
 export type Subscription_RootPostArgs = {
   distinct_on?: InputMaybe<Array<Post_Select_Column>>;
@@ -1233,6 +1275,7 @@ export type Subscription_RootPostArgs = {
   where?: InputMaybe<Post_Bool_Exp>;
 };
 
+
 export type Subscription_RootPost_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Post_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1241,9 +1284,11 @@ export type Subscription_RootPost_AggregateArgs = {
   where?: InputMaybe<Post_Bool_Exp>;
 };
 
+
 export type Subscription_RootPost_By_PkArgs = {
   id: Scalars['Int'];
 };
+
 
 export type Subscription_RootUpvoteArgs = {
   distinct_on?: InputMaybe<Array<Upvote_Select_Column>>;
@@ -1253,6 +1298,7 @@ export type Subscription_RootUpvoteArgs = {
   where?: InputMaybe<Upvote_Bool_Exp>;
 };
 
+
 export type Subscription_RootUpvote_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Upvote_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1261,9 +1307,11 @@ export type Subscription_RootUpvote_AggregateArgs = {
   where?: InputMaybe<Upvote_Bool_Exp>;
 };
 
+
 export type Subscription_RootUpvote_By_PkArgs = {
   id: Scalars['Int'];
 };
+
 
 export type Subscription_RootUserArgs = {
   distinct_on?: InputMaybe<Array<User_Select_Column>>;
@@ -1273,6 +1321,7 @@ export type Subscription_RootUserArgs = {
   where?: InputMaybe<User_Bool_Exp>;
 };
 
+
 export type Subscription_RootUser_AggregateArgs = {
   distinct_on?: InputMaybe<Array<User_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1280,6 +1329,7 @@ export type Subscription_RootUser_AggregateArgs = {
   order_by?: InputMaybe<Array<User_Order_By>>;
   where?: InputMaybe<User_Bool_Exp>;
 };
+
 
 export type Subscription_RootUser_By_PkArgs = {
   id: Scalars['Int'];
@@ -1333,6 +1383,7 @@ export type Upvote_Aggregate_Fields = {
   var_samp?: Maybe<Upvote_Var_Samp_Fields>;
   variance?: Maybe<Upvote_Variance_Fields>;
 };
+
 
 /** aggregate fields of "upvote" */
 export type Upvote_Aggregate_FieldsCountArgs = {
@@ -1395,7 +1446,7 @@ export enum Upvote_Constraint {
   /** unique or primary key constraint */
   UpvotePkey = 'upvote_pkey',
   /** unique or primary key constraint */
-  UpvoteUpvoterIdUpvotedCommentIdKey = 'upvote_upvoter_id_upvoted_comment_id_key',
+  UpvoteUpvoterIdUpvotedCommentIdKey = 'upvote_upvoter_id_upvoted_comment_id_key'
 }
 
 /** input type for incrementing numeric columns in table "upvote" */
@@ -1489,7 +1540,7 @@ export enum Upvote_Select_Column {
   /** column name */
   UpvotedCommentId = 'upvoted_comment_id',
   /** column name */
-  UpvoterId = 'upvoter_id',
+  UpvoterId = 'upvoter_id'
 }
 
 /** input type for updating data in table "upvote" */
@@ -1569,7 +1620,7 @@ export enum Upvote_Update_Column {
   /** column name */
   UpvotedCommentId = 'upvoted_comment_id',
   /** column name */
-  UpvoterId = 'upvoter_id',
+  UpvoterId = 'upvoter_id'
 }
 
 /** aggregate var_pop on columns */
@@ -1636,6 +1687,7 @@ export type User = {
   upvotes_aggregate: Upvote_Aggregate;
 };
 
+
 /** columns and relationships of "user" */
 export type UserPostsArgs = {
   distinct_on?: InputMaybe<Array<Post_Select_Column>>;
@@ -1644,6 +1696,7 @@ export type UserPostsArgs = {
   order_by?: InputMaybe<Array<Post_Order_By>>;
   where?: InputMaybe<Post_Bool_Exp>;
 };
+
 
 /** columns and relationships of "user" */
 export type UserPosts_AggregateArgs = {
@@ -1654,6 +1707,7 @@ export type UserPosts_AggregateArgs = {
   where?: InputMaybe<Post_Bool_Exp>;
 };
 
+
 /** columns and relationships of "user" */
 export type UserUpvotesArgs = {
   distinct_on?: InputMaybe<Array<Upvote_Select_Column>>;
@@ -1662,6 +1716,7 @@ export type UserUpvotesArgs = {
   order_by?: InputMaybe<Array<Upvote_Order_By>>;
   where?: InputMaybe<Upvote_Bool_Exp>;
 };
+
 
 /** columns and relationships of "user" */
 export type UserUpvotes_AggregateArgs = {
@@ -1695,6 +1750,7 @@ export type User_Aggregate_Fields = {
   variance?: Maybe<User_Variance_Fields>;
 };
 
+
 /** aggregate fields of "user" */
 export type User_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<User_Select_Column>>;
@@ -1725,7 +1781,7 @@ export type User_Bool_Exp = {
 /** unique or primary key constraints on table "user" */
 export enum User_Constraint {
   /** unique or primary key constraint */
-  UserPkey = 'user_pkey',
+  UserPkey = 'user_pkey'
 }
 
 /** input type for incrementing numeric columns in table "user" */
@@ -1820,7 +1876,7 @@ export enum User_Select_Column {
   /** column name */
   Lastname = 'lastname',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "user" */
@@ -1870,7 +1926,7 @@ export enum User_Update_Column {
   /** column name */
   Lastname = 'lastname',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 /** aggregate var_pop on columns */
@@ -1895,191 +1951,340 @@ export type InsertUpvoteMutationVariables = Exact<{
   upvote: Upvote_Insert_Input;
 }>;
 
-export type InsertUpvoteMutation = {
-  __typename?: 'mutation_root';
-  insert_upvote_one?: {
-    __typename?: 'upvote';
-    id: number;
-    upvoter_id: number;
-    upvoted_comment_id: number;
-  } | null;
-};
+
+export type InsertUpvoteMutation = { __typename?: 'mutation_root', insert_upvote_one?: { __typename?: 'upvote', id: number, upvoter_id: number, upvoted_comment_id: number } | null };
 
 export type InsertCommentMutationVariables = Exact<{
   comment: Comment_Insert_Input;
 }>;
 
-export type InsertCommentMutation = {
-  __typename?: 'mutation_root';
-  insert_comment_one?: {
-    __typename?: 'comment';
-    id: number;
-    comment: string;
-    created_at: any;
-    user: {
-      __typename?: 'user';
-      avatar: string;
-      firstname: string;
-      lastname: string;
-    };
-  } | null;
-};
+
+export type InsertCommentMutation = { __typename?: 'mutation_root', insert_comment_one?: { __typename?: 'comment', id: number, comment: string, created_at: any, user: { __typename?: 'user', id: number, avatar: string, firstname: string, lastname: string } } | null };
 
 export type PostQueryVariables = Exact<{
   postId: Scalars['Int'];
 }>;
 
-export type PostQuery = {
-  __typename?: 'query_root';
-  post_by_pk?: {
-    __typename?: 'post';
-    id: number;
-    comments: Array<{
-      __typename?: 'comment';
-      id: number;
-      comment: string;
-      created_at: any;
-      upvotes: {
-        __typename?: 'upvote_aggregate';
-        aggregate?: {
-          __typename?: 'upvote_aggregate_fields';
-          count: number;
-        } | null;
-      };
-      user: {
-        __typename?: 'user';
-        avatar: string;
-        firstname: string;
-        lastname: string;
-      };
-    }>;
-  } | null;
-};
 
-export type PostsQueryVariables = Exact<{ [key: string]: never }>;
+export type PostQuery = { __typename?: 'query_root', post_by_pk?: { __typename?: 'post', id: number, comments: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, avatar: string, firstname: string, lastname: string } }> } | null };
 
-export type PostsQuery = {
-  __typename?: 'query_root';
-  post: Array<{ __typename?: 'post'; id: number; title: string }>;
-};
+export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostsQuery = { __typename?: 'query_root', post: Array<{ __typename?: 'post', id: number, title: string }> };
 
 export type UserQueryVariables = Exact<{
   currentUserId: Scalars['Int'];
 }>;
 
-export type UserQuery = {
-  __typename?: 'query_root';
-  user_by_pk?: {
-    __typename?: 'user';
-    id: number;
-    firstname: string;
-    lastname: string;
-    avatar: string;
-  } | null;
-};
 
-export interface PossibleTypesResultData {
-  possibleTypes: {
-    [key: string]: string[];
-  };
-}
-const result: PossibleTypesResultData = {
-  possibleTypes: {},
+export type UserQuery = { __typename?: 'query_root', user_by_pk?: { __typename?: 'user', id: number, firstname: string, lastname: string, avatar: string } | null };
+
+export type PostCommentsSubscriptionVariables = Exact<{
+  postId: Scalars['Int'];
+}>;
+
+
+export type PostCommentsSubscription = { __typename?: 'subscription_root', post_by_pk?: { __typename?: 'post', comments: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, firstname: string, lastname: string, avatar: string } }> } | null };
+
+export type CommentsSubscriptionVariables = Exact<{
+  commentId: Scalars['Int'];
+}>;
+
+
+export type CommentsSubscription = { __typename?: 'subscription_root', comment_by_pk?: { __typename?: 'comment', id: number, comment: string, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null } } | null };
+
+
+      export interface PossibleTypesResultData {
+        possibleTypes: {
+          [key: string]: string[]
+        }
+      }
+      const result: PossibleTypesResultData = {
+  "possibleTypes": {}
 };
-export default result;
+      export default result;
+    
 
 export const InsertUpvoteDocument = gql`
-  mutation insertUpvote($upvote: upvote_insert_input!) {
-    insert_upvote_one(object: $upvote) {
+    mutation insertUpvote($upvote: upvote_insert_input!) {
+  insert_upvote_one(object: $upvote) {
+    id
+    upvoter_id
+    upvoted_comment_id
+  }
+}
+    `;
+export type InsertUpvoteMutationFn = Apollo.MutationFunction<InsertUpvoteMutation, InsertUpvoteMutationVariables>;
+
+/**
+ * __useInsertUpvoteMutation__
+ *
+ * To run a mutation, you first call `useInsertUpvoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertUpvoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertUpvoteMutation, { data, loading, error }] = useInsertUpvoteMutation({
+ *   variables: {
+ *      upvote: // value for 'upvote'
+ *   },
+ * });
+ */
+export function useInsertUpvoteMutation(baseOptions?: Apollo.MutationHookOptions<InsertUpvoteMutation, InsertUpvoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertUpvoteMutation, InsertUpvoteMutationVariables>(InsertUpvoteDocument, options);
+      }
+export type InsertUpvoteMutationHookResult = ReturnType<typeof useInsertUpvoteMutation>;
+export type InsertUpvoteMutationResult = Apollo.MutationResult<InsertUpvoteMutation>;
+export type InsertUpvoteMutationOptions = Apollo.BaseMutationOptions<InsertUpvoteMutation, InsertUpvoteMutationVariables>;
+export const InsertCommentDocument = gql`
+    mutation insertComment($comment: comment_insert_input!) {
+  insert_comment_one(object: $comment) {
+    id
+    comment
+    created_at
+    user {
       id
-      upvoter_id
-      upvoted_comment_id
+      avatar
+      firstname
+      lastname
     }
   }
-`;
-
-export function useInsertUpvoteMutation() {
-  return Urql.useMutation<InsertUpvoteMutation, InsertUpvoteMutationVariables>(
-    InsertUpvoteDocument,
-  );
 }
-export const InsertCommentDocument = gql`
-  mutation insertComment($comment: comment_insert_input!) {
-    insert_comment_one(object: $comment) {
+    `;
+export type InsertCommentMutationFn = Apollo.MutationFunction<InsertCommentMutation, InsertCommentMutationVariables>;
+
+/**
+ * __useInsertCommentMutation__
+ *
+ * To run a mutation, you first call `useInsertCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertCommentMutation, { data, loading, error }] = useInsertCommentMutation({
+ *   variables: {
+ *      comment: // value for 'comment'
+ *   },
+ * });
+ */
+export function useInsertCommentMutation(baseOptions?: Apollo.MutationHookOptions<InsertCommentMutation, InsertCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertCommentMutation, InsertCommentMutationVariables>(InsertCommentDocument, options);
+      }
+export type InsertCommentMutationHookResult = ReturnType<typeof useInsertCommentMutation>;
+export type InsertCommentMutationResult = Apollo.MutationResult<InsertCommentMutation>;
+export type InsertCommentMutationOptions = Apollo.BaseMutationOptions<InsertCommentMutation, InsertCommentMutationVariables>;
+export const PostDocument = gql`
+    query post($postId: Int!) {
+  post_by_pk(id: $postId) {
+    id
+    comments(order_by: [{created_at: desc_nulls_last}]) {
       id
       comment
       created_at
+      upvotes: upvotes_aggregate {
+        aggregate {
+          count
+        }
+      }
       user {
+        id
         avatar
         firstname
         lastname
+        avatar
       }
     }
   }
-`;
-
-export function useInsertCommentMutation() {
-  return Urql.useMutation<
-    InsertCommentMutation,
-    InsertCommentMutationVariables
-  >(InsertCommentDocument);
 }
-export const PostDocument = gql`
-  query post($postId: Int!) {
-    post_by_pk(id: $postId) {
-      id
-      comments(order_by: [{ created_at: desc_nulls_last }]) {
-        id
-        comment
-        upvotes: upvotes_aggregate {
-          aggregate {
-            count
-          }
-        }
-        created_at
-        user {
-          avatar
-          firstname
-          lastname
-          avatar
-        }
+    `;
+
+/**
+ * __usePostQuery__
+ *
+ * To run a query within a React component, call `usePostQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function usePostQuery(baseOptions: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PostQuery, PostQueryVariables>(PostDocument, options);
       }
-    }
-  }
-`;
-
-export function usePostQuery(
-  options: Omit<Urql.UseQueryArgs<PostQueryVariables>, 'query'>,
-) {
-  return Urql.useQuery<PostQuery>({ query: PostDocument, ...options });
-}
+export function usePostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostQuery, PostQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PostQuery, PostQueryVariables>(PostDocument, options);
+        }
+export type PostQueryHookResult = ReturnType<typeof usePostQuery>;
+export type PostLazyQueryHookResult = ReturnType<typeof usePostLazyQuery>;
+export type PostQueryResult = Apollo.QueryResult<PostQuery, PostQueryVariables>;
 export const PostsDocument = gql`
-  query posts {
-    post {
-      id
-      title
-    }
+    query posts {
+  post {
+    id
+    title
   }
-`;
-
-export function usePostsQuery(
-  options?: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'>,
-) {
-  return Urql.useQuery<PostsQuery>({ query: PostsDocument, ...options });
 }
+    `;
+
+/**
+ * __usePostsQuery__
+ *
+ * To run a query within a React component, call `usePostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePostsQuery(baseOptions?: Apollo.QueryHookOptions<PostsQuery, PostsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PostsQuery, PostsQueryVariables>(PostsDocument, options);
+      }
+export function usePostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsQuery, PostsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PostsQuery, PostsQueryVariables>(PostsDocument, options);
+        }
+export type PostsQueryHookResult = ReturnType<typeof usePostsQuery>;
+export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>;
+export type PostsQueryResult = Apollo.QueryResult<PostsQuery, PostsQueryVariables>;
 export const UserDocument = gql`
-  query user($currentUserId: Int!) {
-    user_by_pk(id: $currentUserId) {
+    query user($currentUserId: Int!) {
+  user_by_pk(id: $currentUserId) {
+    id
+    firstname
+    lastname
+    avatar
+  }
+}
+    `;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      currentUserId: // value for 'currentUserId'
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+      }
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export const PostCommentsDocument = gql`
+    subscription postComments($postId: Int!) {
+  post_by_pk(id: $postId) {
+    comments(order_by: {created_at: desc}, limit: 1) {
       id
-      firstname
-      lastname
-      avatar
+      comment
+      created_at
+      upvotes: upvotes_aggregate {
+        aggregate {
+          count
+        }
+      }
+      user {
+        id
+        firstname
+        lastname
+        avatar
+      }
     }
   }
-`;
-
-export function useUserQuery(
-  options: Omit<Urql.UseQueryArgs<UserQueryVariables>, 'query'>,
-) {
-  return Urql.useQuery<UserQuery>({ query: UserDocument, ...options });
 }
+    `;
+
+/**
+ * __usePostCommentsSubscription__
+ *
+ * To run a query within a React component, call `usePostCommentsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `usePostCommentsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostCommentsSubscription({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function usePostCommentsSubscription(baseOptions: Apollo.SubscriptionHookOptions<PostCommentsSubscription, PostCommentsSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<PostCommentsSubscription, PostCommentsSubscriptionVariables>(PostCommentsDocument, options);
+      }
+export type PostCommentsSubscriptionHookResult = ReturnType<typeof usePostCommentsSubscription>;
+export type PostCommentsSubscriptionResult = Apollo.SubscriptionResult<PostCommentsSubscription>;
+export const CommentsDocument = gql`
+    subscription comments($commentId: Int!) {
+  comment_by_pk(id: $commentId) {
+    id
+    comment
+    upvotes: upvotes_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useCommentsSubscription__
+ *
+ * To run a query within a React component, call `useCommentsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCommentsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentsSubscription({
+ *   variables: {
+ *      commentId: // value for 'commentId'
+ *   },
+ * });
+ */
+export function useCommentsSubscription(baseOptions: Apollo.SubscriptionHookOptions<CommentsSubscription, CommentsSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CommentsSubscription, CommentsSubscriptionVariables>(CommentsDocument, options);
+      }
+export type CommentsSubscriptionHookResult = ReturnType<typeof useCommentsSubscription>;
+export type CommentsSubscriptionResult = Apollo.SubscriptionResult<CommentsSubscription>;

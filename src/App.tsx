@@ -1,48 +1,62 @@
 import React, { FC } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import {
-  createClient,
-  defaultExchanges,
-  Provider,
-  subscriptionExchange,
-} from 'urql';
-import { createClient as createWSClient } from 'graphql-ws';
+  ApolloClient,
+  ApolloProvider,
+  HttpLink,
+  InMemoryCache,
+  split,
+} from '@apollo/client';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
 import { Comments } from './components/Comments';
 import { Post } from './components/Post';
 import { Posts } from './components/Posts';
+import { UserProvider } from './contexts/user';
+import { getMainDefinition } from '@apollo/client/utilities';
 
-const wsClient = createWSClient({
-  url: 'ws://localhost:8080/v1/graphql',
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: 'ws://localhost:8080/v1/graphql',
+  }),
+);
+const httpLink = new HttpLink({
+  uri: 'http://localhost:8080/v1/graphql',
 });
 
-const client = createClient({
-  url: 'http://localhost:8080/v1/graphql',
-  exchanges: [
-    ...defaultExchanges,
-    subscriptionExchange({
-      forwardSubscription: operation => ({
-        subscribe: sink => ({
-          unsubscribe: wsClient.subscribe(operation, sink),
-        }),
-      }),
-    }),
-  ],
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
+
+const client = new ApolloClient({
+  link: splitLink,
+  cache: new InMemoryCache(),
 });
 
 export const App: FC = () => {
   return (
     <React.StrictMode>
-      <Provider value={client}>
+      <ApolloProvider client={client}>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Posts />} />
-            <Route path="/post" element={<Post />}>
-              {/* <Route index element={} /> */}
-              <Route path=":postId" element={<Comments />} />
-            </Route>
-          </Routes>
+          <UserProvider>
+            <Routes>
+              <Route path="/" element={<Posts />} />
+              <Route path="/post" element={<Post />}>
+                <Route path=":postId" element={<Comments />} />
+              </Route>
+            </Routes>
+          </UserProvider>
         </BrowserRouter>
-      </Provider>
+      </ApolloProvider>
     </React.StrictMode>
   );
 };

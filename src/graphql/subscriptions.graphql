@@ -1,0 +1,31 @@
+subscription postComments($postId: Int!) {
+  post_by_pk(id: $postId) {
+    comments(order_by: { created_at: desc }, limit: 1) {
+      id
+      comment
+      created_at
+      upvotes: upvotes_aggregate {
+        aggregate {
+          count
+        }
+      }
+      user {
+        id
+        firstname
+        lastname
+        avatar
+      }
+    }
+  }
+}
+
+subscription comments($commentId: Int!) {
+  comment_by_pk(id: $commentId) {
+    id
+    upvotes: upvotes_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}

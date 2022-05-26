@@ -4,13 +4,14 @@ query post($postId: Int!) {
     comments(order_by: [{ created_at: desc_nulls_last }]) {
       id
       comment
+      created_at
       upvotes: upvotes_aggregate {
         aggregate {
           count
         }
       }
-      created_at
       user {
+        id
         avatar
         firstname
         lastname

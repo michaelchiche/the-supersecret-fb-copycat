@@ -12,6 +12,7 @@ mutation insertComment($comment: comment_insert_input!) {
     comment
     created_at
     user {
+      id
       avatar
       firstname
       lastname
