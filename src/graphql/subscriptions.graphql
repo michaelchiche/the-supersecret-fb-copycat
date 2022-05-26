@@ -27,5 +27,21 @@ subscription comments($commentId: Int!) {
         count
       }
     }
+    replies {
+      id
+      comment
+      created_at
+      upvotes: upvotes_aggregate {
+        aggregate {
+          count
+        }
+      }
+      user {
+        id
+        firstname
+        lastname
+        avatar
+      }
+    }
   }
 }

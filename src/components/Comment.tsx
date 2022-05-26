@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import { uniqBy } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useUser } from '../contexts/user';
 import {
@@ -55,7 +56,14 @@ export const Comment = React.memo<{
     },
   });
 
-  console.log('data ===', data?.comment_by_pk?.id);
+  const replies = uniqBy(
+    [
+      ...(data?.comment_by_pk?.replies || []),
+      ...(('replies' in comment && comment.replies) || []),
+    ],
+    'id',
+  );
+
   return (
     <div className="mt-8 flex w-full flex-grow first:mt-0 last:mb-2">
       <img
@@ -78,7 +86,7 @@ export const Comment = React.memo<{
         <div
           className={classnames(
             'mt-3.5 flex text-xs font-semibold text-gray-500',
-            'replies' in comment && !!comment.replies?.length && 'mb-6',
+            replies.length && 'mb-6',
           )}
         >
           <div
@@ -117,10 +125,9 @@ export const Comment = React.memo<{
         )}
         {!isReply && (
           <div>
-            {'replies' in comment &&
-              comment.replies.map(comment => {
-                return <Comment key={comment.id} comment={comment} isReply />;
-              })}
+            {replies.map(comment => {
+              return <Comment key={comment.id} comment={comment} isReply />;
+            })}
           </div>
         )}
       </div>

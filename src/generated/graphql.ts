@@ -1992,7 +1992,7 @@ export type CommentsSubscriptionVariables = Exact<{
 }>;
 
 
-export type CommentsSubscription = { __typename?: 'subscription_root', comment_by_pk?: { __typename?: 'comment', id: number, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null } } | null };
+export type CommentsSubscription = { __typename?: 'subscription_root', comment_by_pk?: { __typename?: 'comment', id: number, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, replies: Array<{ __typename?: 'comment', id: number, comment: string, created_at: any, upvotes: { __typename?: 'upvote_aggregate', aggregate?: { __typename?: 'upvote_aggregate_fields', count: number } | null }, user: { __typename?: 'user', id: number, firstname: string, lastname: string, avatar: string } }> } | null };
 
 
       export interface PossibleTypesResultData {
@@ -2276,6 +2276,22 @@ export const CommentsDocument = gql`
     upvotes: upvotes_aggregate {
       aggregate {
         count
+      }
+    }
+    replies {
+      id
+      comment
+      created_at
+      upvotes: upvotes_aggregate {
+        aggregate {
+          count
+        }
+      }
+      user {
+        id
+        firstname
+        lastname
+        avatar
       }
     }
   }

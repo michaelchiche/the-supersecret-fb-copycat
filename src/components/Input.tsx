@@ -42,6 +42,7 @@ export const Input: FC<
         name="comment"
         placeholder="What are your thoughts?"
         required
+        autoFocus
         onChange={e => (comment = e.target.value)}
       />
 
