@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { FC, useRef } from 'react';
 import { useUser } from '../contexts/user';
 import { useInsertCommentMutation } from '../generated/graphql';
@@ -13,7 +14,7 @@ export const Input: FC<
     <form
       ref={form}
       id="comment-form"
-      className="mt-8 flex h-8"
+      className={classNames('flex h-8', commentId ? 'mb-8' : 'mt-8')}
       onSubmit={e => {
         e.preventDefault();
         insertComment({
