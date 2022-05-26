@@ -19,6 +19,8 @@
 
   const params = new URLSearchParams(window.location.search);
   const postId = params.get('post') || 1;
+  const commentsContainer = document.getElementById('comments');
+  const templateComment = document.getElementById('template-comment');
   const currentUserId = numberBetween(1, 100);
   const commentAuthorAvatarImg = document.getElementById(
     'comment-author-avatar',
@@ -42,6 +44,11 @@
     form.addEventListener('submit', e => {
       e.preventDefault();
       console.log('e', e.target.elements.comment.value);
+      const c = templateComment.cloneNode(true);
+      c.id = `comment-${numberBetween(1, 10000)}`;
+      console.log('c', c);
+      console.log('commentsContainer', commentsContainer);
+      commentsContainer.appendChild(c);
     });
   };
 })();
