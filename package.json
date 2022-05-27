@@ -17,7 +17,6 @@
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html",
     "seed": "parcel build --target node scripts/seed.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "graphql": "graphql-codegen --config codegen.yml"
   },
   "repository": {
@@ -39,6 +38,7 @@
     "@graphql-codegen/typescript": "2.4.11",
     "@graphql-codegen/typescript-operations": "2.4.0",
     "@graphql-codegen/typescript-react-apollo": "^3.2.14",
+    "@playwright/test": "^1.22.2",
     "@tailwindcss/forms": "^0.5.2",
     "@types/lodash": "^4.14.182",
     "@types/react": "^18.0.9",
