@@ -35,7 +35,7 @@ export const Input: FC<
         id="comment-author-avatar"
         className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
         src={user?.avatar}
-        alt="current user avatar"
+        alt={`${user?.firstname[0].toUpperCase()}${user?.lastname[0].toUpperCase()}`}
       />
       <input
         className="mx-3 block h-8 w-full flex-shrink rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"

@@ -70,8 +70,7 @@ export const Comment = React.memo<{
       <img
         className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
         src={comment.user.avatar}
-        alt="current
-        user avatar"
+        alt={`${comment.user.firstname[0].toUpperCase()}${comment.user.lastname[0].toUpperCase()}`}
       />
       <div className="ml-3 mt-1 flex w-full flex-col">
         <div className="flex h-4">
