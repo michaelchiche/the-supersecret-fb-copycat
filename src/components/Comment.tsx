@@ -19,28 +19,29 @@ export const Comment = React.memo<{
   isReply?: boolean;
 }>(({ comment, isReply = false }) => {
   const user = useUser();
+  const [upvotes, setUpvotes] = useState(comment.upvotes.aggregate?.count);
+
   const { data, error } = useCommentsSubscription({
     variables: {
       commentId: comment.id,
     },
   });
 
-  let { current: previousUpvote } = useRef<number>();
   const [animateUpvote, setAnimateUpvote] = useState(false);
   const [showInput, setShowInput] = useState(false);
 
   useEffect(() => {
-    if (
-      data?.comment_by_pk?.upvotes.aggregate?.count &&
-      previousUpvote !== undefined &&
-      data?.comment_by_pk?.upvotes.aggregate?.count !== previousUpvote
-    ) {
+    const potentiallyNewUpvoteCount =
+      data?.comment_by_pk?.upvotes.aggregate?.count ??
+      comment.upvotes.aggregate?.count;
+
+    if (upvotes !== potentiallyNewUpvoteCount) {
       setAnimateUpvote(true);
+      setUpvotes(potentiallyNewUpvoteCount);
       setTimeout(() => {
         setAnimateUpvote(false);
       }, 1000);
     }
-    previousUpvote = data?.comment_by_pk?.upvotes.aggregate?.count;
   }, [data?.comment_by_pk?.upvotes.aggregate?.count]);
 
   if (error) {
@@ -90,10 +91,7 @@ export const Comment = React.memo<{
           )}
         >
           <div
-            data-upvote-count={
-              comment.upvotes.aggregate?.count ||
-              data?.comment_by_pk?.upvotes.aggregate?.count
-            }
+            data-upvote-count={upvotes}
             className="upvote hover:cursor-pointer"
             onClick={() =>
               upvote().catch(e => {
