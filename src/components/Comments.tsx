@@ -42,10 +42,10 @@ export const Comments: FC = () => {
     return <p>Oups, there was error</p>;
   }
   return (
-    <>
+    <div id="comments">
       {data?.post_by_pk?.comments.map(comment => {
         return <Comment key={comment.id} comment={comment} />;
       })}
-    </>
+    </div>
   );
 };
