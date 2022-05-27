@@ -7,6 +7,9 @@ const numberBetween = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
+const numberOfUsers = 20;
+const numberOfComments = 20;
+const numberOfUpvotes = 20;
 const hasura = new GraphQLClient(endpoint, {});
 (async () => {
   // Adding Seed Users
