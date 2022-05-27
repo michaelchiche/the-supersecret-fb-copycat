@@ -1,0 +1,4 @@
+- "!include public_comment.yaml"
+- "!include public_post.yaml"
+- "!include public_upvote.yaml"
+- "!include public_user.yaml"

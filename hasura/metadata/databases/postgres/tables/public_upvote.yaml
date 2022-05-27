@@ -1,0 +1,10 @@
+table:
+  schema: public
+  name: upvote
+object_relationships:
+  - name: comment
+    using:
+      foreign_key_constraint_on: upvoted_comment_id
+  - name: user
+    using:
+      foreign_key_constraint_on: upvoter_id

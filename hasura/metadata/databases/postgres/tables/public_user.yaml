@@ -1,0 +1,25 @@
+table:
+  schema: public
+  name: user
+array_relationships:
+  - name: comments
+    using:
+      foreign_key_constraint_on:
+        column: commentator
+        table:
+          schema: public
+          name: comment
+  - name: posts
+    using:
+      foreign_key_constraint_on:
+        column: author_id
+        table:
+          schema: public
+          name: post
+  - name: upvotes
+    using:
+      foreign_key_constraint_on:
+        column: upvoter_id
+        table:
+          schema: public
+          name: upvote
