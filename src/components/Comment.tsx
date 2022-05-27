@@ -92,7 +92,7 @@ export const Comment = React.memo<{
         >
           <div
             data-upvote-count={upvotes}
-            className="upvote hover:cursor-pointer"
+            className="upvote select-none hover:cursor-pointer"
             onClick={() =>
               upvote().catch(e => {
                 console.error(e);
@@ -111,7 +111,7 @@ export const Comment = React.memo<{
           </div>
           {!isReply && (
             <div
-              className="reply ml-7 hover:cursor-pointer"
+              className="reply ml-7 select-none hover:cursor-pointer"
               onClick={() => setShowInput(true)}
             >
               Reply
