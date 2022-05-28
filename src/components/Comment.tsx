@@ -10,6 +10,9 @@ import {
 import { formatRelativeTime } from '../utils/formatRelativeTime';
 import { Input } from './Input';
 
+const capitalize = (str: string) =>
+  str.charAt(0).toUpperCase() + str.substring(1);
+
 export const Comment = React.memo<{
   comment:
     | NonNullable<NonNullable<PostQuery>['post_by_pk']>['comments'][number]
@@ -66,7 +69,10 @@ export const Comment = React.memo<{
   );
 
   return (
-    <div className="mt-8 flex w-full flex-grow first:mt-0 last:mb-2">
+    <div className="relative mt-8 flex w-full flex-grow first:mt-0 last:mb-2">
+      {replies.length > 0 && (
+        <div className="absolute left-4 top-8 bottom-2 w-0.5 bg-slate-200"></div>
+      )}
       <img
         className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
         src={comment.user.avatar}
@@ -79,7 +85,7 @@ export const Comment = React.memo<{
           </span>
           <span className="mx-1 text-xs leading-3 text-gray-500">・</span>
           <span className="text-xs leading-3 text-gray-500" title="">
-            {formatRelativeTime(new Date(comment.created_at))}
+            {capitalize(formatRelativeTime(new Date(comment.created_at)))}
           </span>
         </div>
         <div className="mt-1 text-sm leading-5">{comment.comment}</div>
